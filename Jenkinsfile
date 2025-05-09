@@ -32,9 +32,12 @@ pipeline {
             environment {
                 ECR_CREDENTIAL = 'ecr:ap-northeast-1:aws-credentials'
             }
+
             steps {
-                docker.withRegistry("${REPO_REGISTRY_URL}", "${ECR_CREDENTIAL}") {
-                    sh "docker push ${REPO_URI}:latest"
+                script{
+                    docker.withRegistry("${REPO_REGISTRY_URL}", "${ECR_CREDENTIAL}") {
+                        sh "docker push ${REPO_URI}:latest"
+                    }
                 }
             }
         }
