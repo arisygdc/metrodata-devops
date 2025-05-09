@@ -35,7 +35,7 @@ pipeline {
 
         stage('Push image') {
             environment {
-                ECR_CREDENTIAL = 'ecr:ap-northeast-1:aws-credentials'
+                ECR_CREDENTIAL = 'ecr:ap-northeast-1:aws-metrodata'
             }
 
             steps {
