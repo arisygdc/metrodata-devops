@@ -22,8 +22,11 @@ pipeline {
 
         stage('Build') {
             steps {
+                env.DATE_TAG = sh(script: "date +%Y-%m-%d", returnStdout: true).trim()
                 sh """
-                    docker build --platform=linux/amd64 -t ${REPO_URI}:latest .
+                    docker build --platform=linux/amd64 -t arisy-movie-service .
+                    docker tag arisy-movie-service:latest ${REPO_URI}:latest
+                    docker tag arisy-movie-service:latest ${REPO_URI}:${env.DATE_TAG}
                 """
             }
         }
@@ -37,6 +40,7 @@ pipeline {
                 script{
                     docker.withRegistry("${REPO_REGISTRY_URL}", "${ECR_CREDENTIAL}") {
                         sh "docker push ${REPO_URI}:latest"
+                        sh "docker push ${REPO_URI}:${env.DATE_TAG}"
                     }
                 }
             }
